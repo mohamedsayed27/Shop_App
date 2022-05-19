@@ -38,7 +38,7 @@ class WelcomeScreen extends StatelessWidget {
                   }, oLayColor: Colors.indigo,),
                   SpecialButton(bColor: Colors.grey.shade300, tColor: Colors.black, text: 'Register',press: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return const RegisterScreen();
+                      return  RegisterScreen();
                     }));
                   }, oLayColor: Colors.grey,),
                 ],

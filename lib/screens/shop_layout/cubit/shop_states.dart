@@ -1,5 +1,7 @@
 import 'package:shop_app/models/favorites_model.dart';
 
+import '../../../models/login_model.dart';
+
 abstract class ShopStates{}
 
 class ShopInitialState extends ShopStates{}
@@ -37,3 +39,18 @@ class ShopErrorFavoritesDataState extends ShopStates{
   final String error;
   ShopErrorFavoritesDataState(this.error);
 }
+
+
+class ShopLoadingGetFavDataState extends ShopStates{}
+
+
+class ShopSuccessGetFavDataState extends ShopStates{}
+
+class ShopErrorGetFavDataState extends ShopStates{
+  final String error;
+  ShopErrorGetFavDataState(this.error);
+}
+
+
+
+

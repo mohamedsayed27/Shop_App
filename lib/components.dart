@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/network/local/cash_helper.dart';
+import 'package:shop_app/screens/login/login_screen.dart';
 
 class BackGround extends StatelessWidget {
   final Widget child;
@@ -83,5 +85,51 @@ Widget positioned({
   return Positioned(
       bottom: bottom, left: left, right: right, top: top, child: image);
 }
-String? token;
+ String? token  ;
+
+
+
+Widget defaultFormField({
+  required TextEditingController controller,
+  required Function validate,
+  TextInputType? type,
+  required String hint,
+  required String label,
+  required Icon preIcon,
+   Icon? sufIcon,
+  Function? submit,
+
+}){
+  return TextFormField(
+    controller: controller,
+    keyboardType: type,
+    validator: (v){
+      return validate(v);
+    },
+    decoration: InputDecoration(
+        hintText: hint,
+        labelText: label,
+        prefixIcon: preIcon,
+        suffixIcon: sufIcon,
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25))),
+    onFieldSubmitted: (s){
+      submit!(s);
+    },
+  );
+}
+
+void signOut(BuildContext context){
+  CacheHelper.removeData(key: 'token').then((value) {
+    if(value) {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(
+              builder: (context){
+                return LoginScreen();
+              }),
+              (route) => false
+      );
+    }
+  });
+}
 

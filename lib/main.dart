@@ -22,8 +22,8 @@ void main() async{
   print(token);
   if(onBoarding != null){
     if(token != null) {
-      widget = const ShopLayout();
-    }else {
+      widget =  const ShopLayout();
+    }if(token == null) {
       widget = LoginScreen();
     }
   }else {
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => ShopCubit()..getHomeData()..getCategoriesData()),
+            create: (context) => ShopCubit()..getHomeData()..getCategoriesData()..getFavoriteData()),
         BlocProvider(
      create : (context) => ShopLoginCubit(),)
       ],

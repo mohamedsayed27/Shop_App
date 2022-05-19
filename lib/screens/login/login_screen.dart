@@ -13,8 +13,8 @@ class LoginScreen extends StatelessWidget {
     LoginScreen({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +23,17 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is ShopLoginSuccessState) {
             if (state.loginModel.status == true) {
-              CacheHelper.saveData(key: 'token', value: state.loginModel.data!.token).then((value) => Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const ShopLayout()),
-                    (Route<dynamic> route) => false,
-              ));
+              CacheHelper.saveData(
+                  key: 'token',
+                  value: state.loginModel.data!.token).
+              then((value) {
+                token = state.loginModel.data!.token;
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ShopLayout()),
+                      (Route<dynamic> route) => false,
+                );
+              });
               Fluttertoast.showToast(
                   msg: "${state.loginModel.message}",
                   toastLength: Toast.LENGTH_SHORT,
@@ -104,6 +110,7 @@ class LoginScreen extends StatelessWidget {
                           if (value!.isEmpty) {
                             return 'Please Enter your E-mail';
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                             hintText: 'E-mail',
@@ -134,6 +141,7 @@ class LoginScreen extends StatelessWidget {
                           if (value!.isEmpty) {
                             return 'Password is too short';
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                             suffixIcon: IconButton(
@@ -190,7 +198,7 @@ class LoginScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const RegisterScreen()));
+                                         RegisterScreen()));
                           },
                         )
                       ],

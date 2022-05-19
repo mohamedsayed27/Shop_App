@@ -19,7 +19,7 @@ class ProductScreen extends StatelessWidget {
           return ConditionalBuilder(
               condition: ShopCubit.get(context).homeModel != null&& ShopCubit.get(context).categoriesModel !=null,
               builder: (context) {
-                return screenBuilder(ShopCubit.get(context).homeModel!,context ,ShopCubit.get(context).categoriesModel! );
+                return screenBuilder(ShopCubit.get(context).homeModel,context ,ShopCubit.get(context).categoriesModel! );
               },
               fallback: (context) =>
                   const Center(child: CircularProgressIndicator()));
@@ -119,7 +119,7 @@ class ProductScreen extends StatelessWidget {
               Container(
                 width: 100,
                 color: Colors.black.withOpacity(0.8),
-                  child: Text(hData.name!,style: TextStyle(color: Colors.white,overflow: TextOverflow.ellipsis),)
+                  child: Text(hData.name!,style: const TextStyle(color: Colors.white,overflow: TextOverflow.ellipsis),)
               ),
             ]
         );
@@ -142,11 +142,15 @@ class ProductScreen extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          Image(
-                            image: NetworkImage(model.data!.products![index].image!)
-                            ,height: 170,
-                            width: double.infinity,
-                          ),
+                          // ConditionalBuilder(
+                          //     condition: ShopCubit.get(context).homeModel!.data!.products![index].image != null,
+                          //     builder: (context)=>Image(
+                          //       image: NetworkImage(model.data!.products![index].image!)
+                          //       ,height: 170,
+                          //       width: double.infinity,
+                          //     ),
+                          //     fallback: (context) => const Image(image: AssetImage('lib/assets/images/google-shopping-feed-ecommerce-final.jpg'))),
+                          FadeInImage(placeholder: const AssetImage('lib/assets/images/phone_shopping.png') , image:NetworkImage(model.data!.products![index].image!),height: 170, width: double.infinity, ),
                           if(model.data!.products![index].discount != 0)
                             Container(
                               color: Colors.red,
@@ -189,8 +193,6 @@ class ProductScreen extends StatelessWidget {
                                   child: IconButton(
                                       onPressed: (){
                                         ShopCubit.get(context).getFavorites(model.data!.products![index].id!);
-                                        print(model.data!.products![index].id);
-
                                       },
                                       icon: const Icon(Icons.favorite_border,size: 15,color: Colors.white,)),
                                 )

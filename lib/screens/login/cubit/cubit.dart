@@ -18,12 +18,13 @@ class ShopLoginCubit extends Cubit<ShopLoginStates> {
   }) {
     emit(ShopLoginLoadingState());
     DioHelper.postData(
-        url: LOGIN,
+        url: login,
         data: {'email': email, 'password': password})
         .then((value) {
       loginModel = ShopLoginModel.fromJson(value.data);
       emit(ShopLoginSuccessState(loginModel!));
     }).catchError((error) {
+      print(error.toString());
       emit(ShopLoginErrorState(error.toString()));
     });
   }
