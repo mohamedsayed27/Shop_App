@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/network/local/cash_helper.dart';
+import 'package:shop_app/modules/login/login_screen.dart';
 
 class BackGround extends StatelessWidget {
   final Widget child;
@@ -38,13 +40,17 @@ class SpecialButton extends StatelessWidget {
   final Color tColor;
   final String text;
   final Function press;
-
-  const SpecialButton({
+  IconData? icon;
+   bool isThereSuffixIcon = false;
+   SpecialButton({
     Key? key,
     required this.bColor,
     required this.tColor,
     required this.text,
-    required this.press, required this.oLayColor,
+    required this.press,
+     required this.oLayColor,
+     this.icon,
+     required this.isThereSuffixIcon
   }) : super(key: key);
 
   @override
@@ -65,10 +71,23 @@ class SpecialButton extends StatelessWidget {
               onPressed: () {
                 press();
               },
-              child: Text(
+              child: isThereSuffixIcon?
+              Row(
+                children: [
+                  Text(
+                    text,
+                    style: TextStyle(color: tColor),
+                  ),
+                  const Spacer(),
+                  Icon(icon,color: Colors.white,),
+                ],
+              ) :
+              Text(
                 text,
                 style: TextStyle(color: tColor),
-              ))),
+              )
+          )
+      ),
     );
   }
 }
@@ -83,5 +102,53 @@ Widget positioned({
   return Positioned(
       bottom: bottom, left: left, right: right, top: top, child: image);
 }
-String? token;
+ String? token  ;
+
+
+
+Widget defaultFormField({
+  required TextEditingController controller,
+  required Function validate,
+  TextInputType? type,
+  required String hint,
+  required String label,
+  required Icon preIcon,
+   IconButton? sufIcon,
+  Function? submit,
+  bool f =false
+
+}){
+  return TextFormField(
+    obscureText: f,
+    controller: controller,
+    keyboardType: type,
+    validator: (v){
+      return validate(v);
+    },
+    decoration: InputDecoration(
+        hintText: hint,
+        labelText: label,
+        prefixIcon: preIcon,
+        suffixIcon: sufIcon,
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25))),
+    onFieldSubmitted: (s){
+      submit!(s);
+    },
+  );
+}
+
+void signOut(BuildContext context){
+  CacheHelper.removeData(key: 'token').then((value) {
+    if(value) {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(
+              builder: (context){
+                return LoginScreen();
+              }),
+              (route) => false
+      );
+    }
+  });
+}
 

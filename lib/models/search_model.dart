@@ -1,21 +1,21 @@
-class CategoriesModel {
+class SearchModel {
   bool? status;
   bool? message;
-  Data? data;
+  SearchProduct? data;
 
-  CategoriesModel({this.status, this.message, this.data});
+  SearchModel({this.status, this.message, this.data});
 
-  CategoriesModel.fromJson(Map<String, dynamic> json) {
+  SearchModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ?  Data.fromJson(json['data']) : null;
+    data = json['data'] != null ?  SearchProduct.fromJson(json['data']) : null;
   }
 
 }
 
-class Data {
+class SearchProduct {
   int? currentPage;
-  List<HData>? data;
+  List<Product>? data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
@@ -27,7 +27,7 @@ class Data {
   int? to;
   int? total;
 
-  Data(
+  SearchProduct(
       {this.currentPage,
         this.data,
         this.firstPageUrl,
@@ -41,12 +41,12 @@ class Data {
         this.to,
         this.total});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  SearchProduct.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
     if (json['data'] != null) {
-      data = <HData>[];
+      data = <Product>[];
       json['data'].forEach((v) {
-        data!.add( HData.fromJson(v));
+        data!.add( Product.fromJson(v));
       });
     }
     firstPageUrl = json['first_page_url'];
@@ -63,17 +63,32 @@ class Data {
 
 }
 
-class HData {
+
+class Product {
   int? id;
-  String? name;
+  dynamic price;
+  dynamic oldPrice;
+  dynamic discount;
   String? image;
+  String? name;
+  String? description;
 
-  HData({this.id, this.name, this.image});
+  Product(
+      {this.id,
+        this.price,
+        this.oldPrice,
+        this.discount,
+        this.image,
+        this.name,
+        this.description});
 
-  HData.fromJson(Map<String, dynamic> json) {
+  Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
+    price = json['price'];
+    oldPrice = json['old_price'];
+    discount = json['discount'];
     image = json['image'];
+    name = json['name'];
+    description = json['description'];
   }
-
 }

@@ -1,11 +1,11 @@
-class CategoriesModel {
+class FavoritesModel {
   bool? status;
   bool? message;
   Data? data;
 
-  CategoriesModel({this.status, this.message, this.data});
+  FavoritesModel({this.status, this.message, this.data});
 
-  CategoriesModel.fromJson(Map<String, dynamic> json) {
+  FavoritesModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ?  Data.fromJson(json['data']) : null;
@@ -15,7 +15,7 @@ class CategoriesModel {
 
 class Data {
   int? currentPage;
-  List<HData>? data;
+  List<FavData>? data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
@@ -44,9 +44,9 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
     if (json['data'] != null) {
-      data = <HData>[];
+      data = <FavData>[];
       json['data'].forEach((v) {
-        data!.add( HData.fromJson(v));
+        data!.add( FavData.fromJson(v));
       });
     }
     firstPageUrl = json['first_page_url'];
@@ -63,17 +63,45 @@ class Data {
 
 }
 
-class HData {
+class FavData {
   int? id;
-  String? name;
-  String? image;
+  Product? product;
 
-  HData({this.id, this.name, this.image});
+  FavData({this.id, this.product});
 
-  HData.fromJson(Map<String, dynamic> json) {
+  FavData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
-    image = json['image'];
+    product =
+    json['product'] != null ? Product.fromJson(json['product']) : null;
   }
 
+}
+
+class Product {
+  int? id;
+  dynamic price;
+  dynamic oldPrice;
+  dynamic discount;
+  String? image;
+  String? name;
+  String? description;
+
+  Product(
+      {this.id,
+        this.price,
+        this.oldPrice,
+        this.discount,
+        this.image,
+        this.name,
+        this.description});
+
+  Product.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    price = json['price'];
+    oldPrice = json['old_price'];
+    discount = json['discount'];
+    image = json['image'];
+    name = json['name'];
+    description = json['description'];
+  }
 }
