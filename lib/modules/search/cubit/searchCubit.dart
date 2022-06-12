@@ -1,7 +1,6 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_app/screens/search/cubit/searchStates.dart';
-
 import '../../../components.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/modules/search/cubit/searchStates.dart';
 import '../../../models/search_model.dart';
 import '../../../network/end_points.dart';
 import '../../../network/remote/dio_helper.dart';
@@ -25,7 +24,6 @@ class SearchCubit extends Cubit<SearchStates>{
       model = SearchModel.fromJson(value.data);
       emit(ShopSuccessSearchDataState());
     }).catchError((e){
-      print(e.toString());
       emit(ShopErrorSearchDataState(e.toString()));
     });
 

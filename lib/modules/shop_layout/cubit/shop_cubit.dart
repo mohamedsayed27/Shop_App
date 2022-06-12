@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/components.dart';
 import 'package:shop_app/models/categories_model.dart';
+import 'package:shop_app/models/chart_model.dart';
 import 'package:shop_app/models/favorites_items_model.dart';
 import 'package:shop_app/models/favorites_model.dart';
 import 'package:shop_app/models/home_model.dart';
-import 'package:shop_app/models/login_model.dart';
-import 'package:shop_app/models/search_model.dart';
 import 'package:shop_app/network/end_points.dart';
-import 'package:shop_app/network/local/cash_helper.dart';
 import 'package:shop_app/network/remote/dio_helper.dart';
-import 'package:shop_app/screens/login/login_screen.dart';
+import '../../../models/ChangeCartModel.dart';
 import '../categories_screen.dart';
-import 'package:shop_app/screens/shop_layout/cubit/shop_states.dart';
-import 'package:shop_app/screens/shop_layout/favorite_screen.dart';
-import 'package:shop_app/screens/shop_layout/products_screen.dart';
+import 'package:shop_app/modules/shop_layout/cubit/shop_states.dart';
+import 'package:shop_app/modules/shop_layout/favorite_screen.dart';
+import 'package:shop_app/modules/shop_layout/products_screen.dart';
 
 class ShopCubit extends Cubit<ShopStates> {
   ShopCubit() : super(ShopInitialState());
@@ -23,7 +21,7 @@ class ShopCubit extends Cubit<ShopStates> {
 
   int currentIndex = 1;
 
-  List<Widget> bottomNavScreens = [
+  List<Widget> bottomNavModules = [
     const CategoriesScreen(),
     const ProductScreen(),
      const FavoriteScreen(),
@@ -36,15 +34,20 @@ class ShopCubit extends Cubit<ShopStates> {
 
   HomeModel? homeModel;
   CategoriesModel? categoriesModel;
-  Map<int , bool> favorites = {} ;
-
   void getHomeData() {
     emit(ShopLoadingHomeDataState());
-    DioHelper.getData(url: home, token: token).then((value) {
+    DioHelper.getData(
+        url: home,
+        token: token,
+    ).then((value) {
       homeModel = HomeModel.fromJson(value.data);
       for (var element in homeModel!.data!.products!) {
         favorites.addAll({element.id! : element.inFavorites!});
       }
+      for (var element in homeModel!.data!.products!) {
+        carts.addAll({element.id! : element.inCart!});
+      }
+      print(carts.toString());
       emit(ShopSuccessHomeDataState());
     }).catchError((error) {
       emit(ShopErrorHomeDataState(error.toString()));
@@ -60,10 +63,12 @@ class ShopCubit extends Cubit<ShopStates> {
       emit(ShopErrorCategoriesDataState(error.toString()));
     });
   }
+
+  Map<int , bool> favorites = {} ;
   ChangeFavoritesModel? changeFavoritesModel;
   void getFavorites(int productId){
     favorites[productId] = !favorites[productId]!;
-    emit(ShopFavoritesDataState());
+    emit(ShopLoadingFavoritesDataState());
     DioHelper.postData(
         url: favoritesUrl,
         data: {'product_id' : productId} ,
@@ -80,7 +85,7 @@ class ShopCubit extends Cubit<ShopStates> {
     })
         .catchError((error){
           favorites[productId] = !favorites[productId]!;
-          emit(ShopErrorFavoritesDataState(error));
+          emit(ShopErrorFavoritesDataState(error.toString()));
     });
   }
 
@@ -100,5 +105,46 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
 
+
+  Map<int , bool> carts = {} ;
+  ChangeCartModel? changeCartModel;
+  void changeCarts(int productId){
+    carts[productId] = !carts[productId]!;
+    emit(ShopLoadingCartsDataState());
+    DioHelper.postData(
+        url: cartUrl,
+        data: {'product_id' : productId} ,
+        token: token
+    )
+        .then((value) {
+      changeCartModel = ChangeCartModel.fromJson(value.data);
+      if(! changeCartModel!.status!) {
+        favorites[productId] = !favorites[productId]!;
+      }else{
+        getCartsData();
+      }
+      print(carts[productId].toString());
+      emit(ShopSuccessCartsDataState(changeCartModel!));
+    })
+        .catchError((error){
+      carts[productId] = !carts[productId]!;
+      emit(ShopErrorCartsDataState(error.toString()));
+    });
+  }
+
+  CartModel? cartModel;
+  void getCartsData(){
+    emit(ShopLoadingGetCartDataState());
+    DioHelper.getData(
+      url: cartUrl,
+      lang: 'en',
+      token: token,
+    ).then((value) {
+      cartModel = CartModel.fromJson(value.data);
+      emit(ShopSuccessGetCartDataState());
+    }).catchError((error){
+      emit(ShopErrorCartsDataState(error.toString()));
+    });
+  }
 
 }

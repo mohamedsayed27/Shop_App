@@ -1,10 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_app/screens/shop_layout/cubit/shop_cubit.dart';
-import 'package:shop_app/screens/shop_layout/cubit/shop_states.dart';
-import 'package:shop_app/screens/search/search_screen.dart';
-import 'package:shop_app/screens/settings/settings_screen.dart';
+import 'package:shop_app/modules/shop_layout/cubit/shop_cubit.dart';
+import 'package:shop_app/modules/shop_layout/cubit/shop_states.dart';
+import 'package:shop_app/modules/search/search_screen.dart';
+import 'package:shop_app/modules/settings/settings_screen.dart';
 
 class ShopLayout extends StatelessWidget {
   const ShopLayout({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class ShopLayout extends StatelessWidget {
         var cubit = ShopCubit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title:  const Text('G Shop',style:  TextStyle(fontSize: 25),),
+            title:  const Text('Software Team',style:  TextStyle(fontSize: 25),),
             actions: [
               IconButton(
                   onPressed: (){
@@ -30,7 +30,7 @@ class ShopLayout extends StatelessWidget {
                   icon:  const Icon(Icons.settings) , iconSize: 30,),
             ],
           ),
-          body: cubit.bottomNavScreens[cubit.currentIndex],
+          body: cubit.bottomNavModules[cubit.currentIndex],
           bottomNavigationBar: CurvedNavigationBar(
             items: const [
               Icon(Icons.category, size: 30),

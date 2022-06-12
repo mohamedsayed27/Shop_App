@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_app/screens/settings/cubit/settings_states.dart';
+import 'package:shop_app/modules/settings/cubit/settings_states.dart';
 
 import '../../../components.dart';
 import '../../../models/login_model.dart';
@@ -44,12 +44,11 @@ class SettingsCubit extends Cubit<SettingsStates>{
           'phone' :phone ,
           'email' : email ,
           'name' : name,
-        }).
+        }, token: token,).
     then((value) {
       userModel = ShopLoginModel.fromJson(value.data);
       emit(ShopUpdateUserSuccessState(userModel!));
     }).catchError((e){
-      print(e.toString());
       emit(ShopUpdateUserErrorState(e.toString()));
     });
   }

@@ -2,8 +2,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/components.dart';
-import 'package:shop_app/screens/search/cubit/searchCubit.dart';
-import 'package:shop_app/screens/search/cubit/searchStates.dart';
+import 'package:shop_app/modules/search/cubit/searchCubit.dart';
+import 'package:shop_app/modules/search/cubit/searchStates.dart';
 import '../../models/search_model.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -55,7 +55,7 @@ class SearchScreen extends StatelessWidget {
                             },
                             itemCount:SearchCubit.get(context).model!.data!.data!.length),
                       ),
-                      fallback: (context) => Center(child: CircularProgressIndicator(),),
+                      fallback: (context) => const Center(child:  CircularProgressIndicator(),),
                     ),
                   ],
                 ),

@@ -2,8 +2,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shop_app/screens/register/cubit/RegCubit.dart';
-import 'package:shop_app/screens/register/cubit/RegStates.dart';
+import 'package:shop_app/modules/register/cubit/RegCubit.dart';
+import 'package:shop_app/modules/register/cubit/RegStates.dart';
 import '../../components.dart';
 import '../../network/local/cash_helper.dart';
 import '../shop_layout/shop_layout.dart';
@@ -67,14 +67,14 @@ class RegisterScreen extends StatelessWidget {
                   top: 0,
                   left: 0,
                   image: Image.asset(
-                    'lib/assets/images/main_top.png',
+                    'assets/images/main_top.png',
                     width: size.width * 0.3,
                   ),
                 ),
                 positioned2: positioned(
                   bottom: 0,
                   right: 0,
-                  image: Image.asset('lib/assets/images/login_bottom.png',
+                  image: Image.asset('assets/images/login_bottom.png',
                       width: size.width * 0.4),
                 ),
                 child: SingleChildScrollView(
@@ -93,7 +93,7 @@ class RegisterScreen extends StatelessWidget {
                           SizedBox(
                             height: size.height * 0.01,
                           ),
-                          Image.asset('lib/assets/images/Personal site-rafiki.png',
+                          Image.asset('assets/images/Personal site-rafiki.png',
                               height: size.height * 0.3),
                           SizedBox(
                             height: size.height * 0.01,
@@ -129,8 +129,17 @@ class RegisterScreen extends StatelessWidget {
                               },
                               hint: "Enter Your password",
                               label: "Password",
-                              sufIcon: const Icon(Icons.visibility),
-                              preIcon: const Icon(Icons.password)),
+                              sufIcon:  IconButton(
+                                  onPressed: (){
+                                    ShopRegisterCubit.get(context).passwordVisible();
+                                  },
+                                  icon: ShopRegisterCubit.get(context).suffix,
+
+                              ),
+                              preIcon: const Icon(Icons.password),
+                            f: ShopRegisterCubit.get(context).isVisible
+
+                          ),
                           SizedBox(height: size.height * 0.02),
                           defaultFormField(
                               controller: phoneController,
@@ -144,8 +153,10 @@ class RegisterScreen extends StatelessWidget {
                               preIcon: const Icon(Icons.phone)),
                           SizedBox(height: size.height * 0.02),
                           ConditionalBuilder(
-                            builder: (BuildContext context) { return SpecialButton(
+                            builder: (BuildContext context) {
+                              return SpecialButton(
                                 bColor: Colors.deepPurple.shade500,
+                                isThereSuffixIcon: false,
                                 tColor: Colors.white,
                                 text: "Register",
                                 press: (){

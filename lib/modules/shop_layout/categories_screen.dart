@@ -2,8 +2,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/models/categories_model.dart';
-import 'package:shop_app/screens/shop_layout/cubit/shop_cubit.dart';
-import 'package:shop_app/screens/shop_layout/cubit/shop_states.dart';
+import 'package:shop_app/modules/shop_layout/cubit/shop_cubit.dart';
+import 'package:shop_app/modules/shop_layout/cubit/shop_states.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({Key? key}) : super(key: key);

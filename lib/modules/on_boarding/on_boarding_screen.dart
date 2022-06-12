@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/network/local/cash_helper.dart';
-import 'package:shop_app/screens/welcome/welcome_screen.dart';
+import 'package:shop_app/modules/welcome/welcome_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BoardingModel {
   final String img;
-  final String title;
   final String bodyTitle;
+  final String title;
 
   BoardingModel({
     required this.title,
@@ -25,19 +25,19 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   List<BoardingModel> boarding = [
     BoardingModel(
-      bodyTitle: 'Boarding 1',
-      title: 'Boarding 1',
-      img: 'lib/assets/images/mannetjes.png',
+      bodyTitle: 'Shopping With the Family',
+      title: 'You can buy any thing to your family ',
+      img: 'assets/images/mannetjes.png',
     ),
     BoardingModel(
-      bodyTitle: 'Boarding 1',
-      title: 'Boarding 1',
-      img: 'lib/assets/images/phone_shopping.png',
+      bodyTitle: 'Get anything Online',
+      title: 'Nowww...!! you can buy any thing from the internet',
+      img: 'assets/images/phone_shopping.png',
     ),
     BoardingModel(
-      bodyTitle: 'Boarding 1',
-      title: 'Boarding 1',
-      img: 'lib/assets/images/google-shopping-feed-ecommerce-final.jpg',
+      bodyTitle: 'Easy to buy',
+      title: 'Ease way to Ordeeeer our product ',
+      img: 'assets/images/google-shopping-feed-ecommerce-final.jpg',
     ),
   ];
   var pageViewController = PageController();
@@ -125,7 +125,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 const Spacer(),
                 isLast
-                    ? Container( padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 3),color: Colors.deepPurple.shade500,child: TextButton(onPressed: submit, child: const Text('Get Start',style:  TextStyle(color: Colors.white),)))
+                    ? Container( 
+                    padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 3), 
+                    color: Colors.deepPurple.shade500, 
+                    child: TextButton(onPressed: submit, child: const Text('Get Start',style:  TextStyle(color: Colors.white),)),
+                )
                     : FloatingActionButton(
                         heroTag: null,
                         onPressed: () {
@@ -153,14 +157,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             const SizedBox(
               height: 50,
             ),
-            Text(
-              model.title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+            Text(model.bodyTitle,style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             const SizedBox(
               height: 20,
             ),
-            Text(model.bodyTitle),
+            Text(
+              model.title,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+            ),
           ],
         ),
       );

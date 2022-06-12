@@ -8,6 +8,7 @@ const fcmToken = 'fcm-token';
 const registerUrl ='register';
 const updateProfile = 'update-profile';
 const searchUrl = 'products/search';
+const cartUrl = 'carts';
 
 
 

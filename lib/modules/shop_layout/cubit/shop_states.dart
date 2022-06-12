@@ -1,6 +1,7 @@
+import 'package:shop_app/models/ChangeCartModel.dart';
+import 'package:shop_app/models/chart_model.dart';
 import 'package:shop_app/models/favorites_model.dart';
 
-import '../../../models/login_model.dart';
 
 abstract class ShopStates{}
 
@@ -26,7 +27,7 @@ class ShopErrorCategoriesDataState extends ShopStates{
   ShopErrorCategoriesDataState(this.error);
 }
 
-class ShopFavoritesDataState extends ShopStates{}
+class ShopLoadingFavoritesDataState extends ShopStates{}
 
 
 class ShopSuccessFavoritesDataState extends ShopStates{
@@ -50,6 +51,40 @@ class ShopErrorGetFavDataState extends ShopStates{
   final String error;
   ShopErrorGetFavDataState(this.error);
 }
+
+
+class ShopLoadingCartDataState extends ShopStates{}
+
+
+
+
+
+class ShopLoadingCartsDataState extends ShopStates{}
+
+
+class ShopSuccessCartsDataState extends ShopStates{
+  final ChangeCartModel model;
+
+  ShopSuccessCartsDataState(this.model);
+}
+
+class ShopErrorCartsDataState extends ShopStates{
+  final String error;
+  ShopErrorCartsDataState(this.error);
+}
+
+
+class ShopLoadingGetCartDataState extends ShopStates{}
+
+
+class ShopSuccessGetCartDataState extends ShopStates{}
+
+class ShopErrorGetCartDataState extends ShopStates{
+  final String error;
+  ShopErrorGetCartDataState(this.error);
+}
+
+
 
 
 

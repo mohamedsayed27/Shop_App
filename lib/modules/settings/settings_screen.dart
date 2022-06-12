@@ -1,11 +1,9 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_app/screens/settings/cubit/settings_cubit.dart';
-import 'package:shop_app/screens/settings/cubit/settings_states.dart';
-import 'package:shop_app/screens/shop_layout/cubit/shop_cubit.dart';
-import 'package:shop_app/screens/shop_layout/cubit/shop_states.dart';
-
+import 'package:shop_app/modules/settings/cubit/settings_cubit.dart';
+import 'package:shop_app/modules/settings/cubit/settings_states.dart';
 import '../../components.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -21,20 +19,28 @@ class SettingsScreen extends StatelessWidget {
       create: (BuildContext context) => SettingsCubit()..getUserProfileData(),
       child: BlocConsumer<SettingsCubit, SettingsStates>(
           builder: (context, state) {
-                  return ConditionalBuilder(
-                      condition: SettingsCubit.get(context).userModel != null ,
-                      builder: (context) {
-                        nameController.text = SettingsCubit.get(context).userModel!.data!.name! ;
-                        emailController.text = SettingsCubit.get(context).userModel!.data!.email! ;
-                        phoneController.text = SettingsCubit.get(context).userModel!.data!.phone!  ;
-                        return Scaffold(
-                          appBar: AppBar(
-                            title: const Text(
-                              'Settings',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
-                          body: SingleChildScrollView(
+                  return Scaffold(
+                    appBar: AppBar(
+                      title: const Text(
+                        'Settings',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    body: ConditionalBuilder(
+                        condition: SettingsCubit.get(context).userModel != null ,
+                        builder: (context) {
+                          var cubit = SettingsCubit.get(context);
+                          if(cubit.userModel!.status!){
+                            var model = cubit.userModel;
+                            nameController.text = model!.data!.name! ;
+                            emailController.text = model.data!.email! ;
+                            phoneController.text = model.data!.phone!  ;
+                          } else {
+                            if (kDebugMode) {
+                              print(cubit.userModel!.message);
+                            }
+                          }
+                          return SingleChildScrollView(
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Form(
@@ -42,6 +48,9 @@ class SettingsScreen extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    if(state is ShopUpdateUserLoadingState)
+                                    const LinearProgressIndicator(),
+                                    const SizedBox(height: 10,),
                                     defaultFormField(
                                         label: 'name',
                                         hint: 'Enter your name',
@@ -81,46 +90,42 @@ class SettingsScreen extends StatelessWidget {
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    // ConditionalBuilder(
-                                    //   builder: (BuildContext context) {
-                                    //     return SpecialButton(
-                                    //       bColor: Colors.deepPurple.shade500,
-                                    //       tColor: Colors.white,
-                                    //       text: "Update",
-                                    //       press: () {
-                                    //         if(formKey.currentState!.validate()){
-                                    //           SettingsCubit.get(context).updateUserData(
-                                    //             name: nameController.text,
-                                    //             email: emailController.text,
-                                    //             phone: phoneController.text,
-                                    //           );
-                                    //         }
-                                    //       },
-                                    //       oLayColor: Colors.deepPurple) ; },
-                                    //   condition: SettingsCubit.get(context).userModel!.data != null,
-                                    //   fallback: (BuildContext context) { return const Center(child: CircularProgressIndicator()) ; },
-                                    //
-                                    // ),
+                                    SpecialButton(
+                                      bColor: Colors.deepPurple.shade500,
+                                      tColor: Colors.white,
+                                      text: "Update",
+                                      press: () {
+                                        if(formKey.currentState!.validate()){
+                                          SettingsCubit.get(context).updateUserData(
+                                            name: nameController.text,
+                                            email: emailController.text,
+                                            phone: phoneController.text,
+                                          );
+                                        }
+                                      },
+                                      oLayColor: Colors.deepPurple, isThereSuffixIcon: false,),
                                     const SizedBox(
                                       height: 10,
                                     ),
                                     SpecialButton(
-                                        bColor: Colors.deepPurple.shade500,
-                                        tColor: Colors.white,
-                                        text: "LogOut",
-                                        press: () {
-                                          SettingsCubit.get(context)
-                                              .signOut(fcm_token: token!, context: context);
-                                        },
-                                        oLayColor: Colors.deepPurple),
+                                      bColor: Colors.deepPurple.shade500,
+                                      tColor: Colors.white,
+                                      text: "LogOut",
+                                      press: () {
+                                        SettingsCubit.get(context)
+                                            .signOut(fcm_token: token!, context: context);
+                                      },
+                                      oLayColor: Colors.deepPurple,
+                                      isThereSuffixIcon: false,
+                                    ),
                                   ],
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                      fallback:(context) => const Center(child: CircularProgressIndicator()));
+                          );
+                        },
+                        fallback:(context) => const Center(child: CircularProgressIndicator())),
+                  );
                 },
           listener: (context, state) {}),
     );

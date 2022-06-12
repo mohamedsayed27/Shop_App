@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/network/local/cash_helper.dart';
-import 'package:shop_app/screens/login/cubit/cubit.dart';
-import 'package:shop_app/screens/login/cubit/states.dart';
-import 'package:shop_app/screens/shop_layout/shop_layout.dart';
+import 'package:shop_app/modules/login/cubit/cubit.dart';
+import 'package:shop_app/modules/login/cubit/states.dart';
+import 'package:shop_app/modules/shop_layout/shop_layout.dart';
 import '../register/register_screen.dart';
 import '../../components.dart';
 
@@ -42,7 +42,6 @@ class LoginScreen extends StatelessWidget {
                   backgroundColor: Colors.red,
                   textColor: Colors.white,
                   fontSize: 16.0);
-              // Navigator.pushReplacementNamed(context, '/shopscreen');
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const ShopLayout()),
@@ -67,14 +66,14 @@ class LoginScreen extends StatelessWidget {
             top: 0,
             left: 0,
             image: Image.asset(
-              'lib/assets/images/main_top.png',
+              'assets/images/main_top.png',
               width: size.width * 0.3,
             ),
           ),
           positioned2: positioned(
             bottom: 0,
             right: 0,
-            image: Image.asset('lib/assets/images/login_bottom.png',
+            image: Image.asset('assets/images/login_bottom.png',
                 width: size.width * 0.4),
           ),
           child: SingleChildScrollView(
@@ -93,7 +92,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: size.height * 0.01,
                     ),
-                    Image.asset('lib/assets/images/Mobile login.png',
+                    Image.asset('assets/images/Mobile login.png',
                         height: size.height * 0.4),
                     SizedBox(
                       height: size.height * 0.01,
@@ -170,7 +169,7 @@ class LoginScreen extends StatelessWidget {
                                 password: passwordController.text);
                           }
                         },
-                        oLayColor: Colors.deepPurple.shade700,
+                        oLayColor: Colors.deepPurple.shade700, isThereSuffixIcon: false,
                       ),
                       fallback: (BuildContext context) {
                         return const CircularProgressIndicator();

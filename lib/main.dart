@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/bloc_observer.dart';
+import 'package:shop_app/modules/on_boarding/on_boarding_screen.dart';
 import 'package:shop_app/network/local/cash_helper.dart';
-import 'package:shop_app/screens/login/cubit/cubit.dart';
-import 'package:shop_app/screens/login/login_screen.dart';
-import 'package:shop_app/screens/on_boarding/on_boarding_screen.dart';
-import 'package:shop_app/screens/shop_layout/cubit/shop_cubit.dart';
-import 'package:shop_app/screens/shop_layout/shop_layout.dart';
+
 import 'package:shop_app/style.dart';
 import 'components.dart';
+import 'modules/login/cubit/cubit.dart';
+import 'modules/login/login_screen.dart';
+import 'modules/shop_layout/cubit/shop_cubit.dart';
+import 'modules/shop_layout/shop_layout.dart';
 import 'network/remote/dio_helper.dart';
 
 void main() async{
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => ShopCubit()..getHomeData()..getCategoriesData()..getFavoriteData()),
+            create: (context) => ShopCubit()..getHomeData()..getCategoriesData()..getFavoriteData()..getCartsData()),
         BlocProvider(
      create : (context) => ShopLoginCubit(),)
       ],
