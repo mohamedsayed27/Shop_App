@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
    final bool? onBoarding;
    final Widget? startWidget;
     const MyApp({Key? key, this.onBoarding, this.startWidget}) : super(key: key);
+    // trying
 
 
   // This widget is the root of your application.
